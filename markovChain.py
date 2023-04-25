@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+from collections import defaultdict
+
+##Markov Chain to predict Google Stock Price
 
 ##Intial State
 states = ["Increase", "Decrease"]
@@ -87,7 +90,7 @@ percentage = (count/simulations) * 100
 print("Start State: "+start+" End State: "+request+" = "+str(percentage)+"%")
 
 ##Stores all of the paths that move took and their frequencies
-paths = {}
+paths = defaultdict(list)
 
 ##Since we cant use a list a key to a dictionary we need to convert every list to a string
 strings = []
@@ -105,9 +108,14 @@ for i in range(0, len(storage_paths)):
 ##Count how many times each path occurred during teh simulation
 for path in strings:
     if path not in paths:
-        paths[path] = 1
+        paths[path] = [1]
     else:
-        paths[path] += 1
+        paths[path][0] += 1
+
+##Find percentage of occurance
+for i in strings:
+    if paths[i][0]/simulations not in paths[i]:
+        paths[i].append(paths[i][0]/simulations)
 
 print(paths)
 
