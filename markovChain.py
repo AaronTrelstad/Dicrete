@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import random
 from collections import defaultdict
 
-##Markov Chain to predict Google Stock Price
+##Markov Chain to predict Google Stock Price movements
 
 ##Intial State
 states = ["Increase", "Decrease"]
@@ -69,25 +69,27 @@ count = 0
 ##simulations is the number of simulations you wnat to run on the data
 simulations = 1000
 
-
-##request is the moves you want to track
-request = "Increase"
+##end is final move you want to predict
+end = "Increase"
 
 ##start is the state you want to start at
 start = "Increase"
 
+##days of simulation
+days = 4
+
 ##simulate event 
 for interations in range(0, simulations):
-    storage.append(markov(start, 2))
+    storage.append(markov(start, days))
 
 ##Record numebr of times request occured
 for change in storage:
-    if change[0] == request:
+    if change[0] == end:
         count+=1
 
 percentage = (count/simulations) * 100
 
-print("Start State: "+start+" End State: "+request+" = "+str(percentage)+"%")
+print("Start State: "+start+" End State: "+end+" = "+str(percentage)+"%")
 
 ##Stores all of the paths that move took and their frequencies
 paths = defaultdict(list)
@@ -117,7 +119,7 @@ for i in strings:
     if paths[i][0]/simulations not in paths[i]:
         paths[i].append(paths[i][0]/simulations)
 
-print(paths)
+print(sorted(paths.items(), key=lambda x:x[1], reverse=True))
 
 
 

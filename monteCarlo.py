@@ -1,18 +1,57 @@
-from random import random
-from math import pow, sqrt
+import math
+import statistics
+import matplotlib.pyplot as plt
+import numpy as np
+import csv
 
-trial=1000
-hits = 0
-throws = 0
-for i in range (1, trial):
-    throws += 1
-    x = random()
-    y = random()
-    dist = sqrt(pow(x, 2) + pow(y, 2))
-    if dist <= 1.0:
-        hits = hits + 1.0
+##copy data into an array
+with open('close.csv') as f:
+    reader = csv.reader(f)
+    data = list(reader)
 
-# hits / throws = 1/4 Pi
-pi = 4 * (hits / throws)
+##make list of closing prices
+close = []
+for i in range(0, len(data)):
+    close.append(float(data[i][0]))
 
-print("pi is= ",pi)
+days = len(close)
+years = days / 365.0
+totalGrowth = (close[0]/close[-1])
+growthRate = totalGrowth ** (1/years) - 1
+
+st_dev = statistics.stdev(close)
+
+def random_return():
+    daily_return = np.random.normal(growthRate/days, st_dev)
+    return 1 + (daily_return / 100)
+
+days = 10
+simulations = 100
+closingPrices = []
+
+## change this to see Histogram vs Monte Carlo
+hist = False
+
+for i in range(simulations):
+    priceSeries = [close[-1]]
+    for i in range(0, days):
+        priceSeries.append(priceSeries[-1] * random_return())
+    closingPrices.append(priceSeries[-1])
+    if not hist:
+        plt.plot(priceSeries)
+
+if not hist:
+    plt.savefig("monteCarlo(100sim).png")
+
+
+if hist:
+    plt.hist(closingPrices)
+    plt.savefig("closing(100sim)")
+
+expectedClose = sum(closingPrices)/len(closingPrices)
+print(expectedClose)
+
+
+
+
+
