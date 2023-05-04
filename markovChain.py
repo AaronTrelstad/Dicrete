@@ -76,7 +76,7 @@ end = "Increase"
 start = "Increase"
 
 ##days of simulation
-days = 4
+days = 3
 
 ##simulate event 
 for interations in range(0, simulations):
@@ -107,7 +107,7 @@ for i in range(0, len(storage_paths)):
         path += storage_paths[i][j]
     strings.append(path)
 
-##Count how many times each path occurred during teh simulation
+##Count how many times each path occurred during the simulation
 for path in strings:
     if path not in paths:
         paths[path] = [1]

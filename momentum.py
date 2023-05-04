@@ -2,8 +2,7 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt 
 import csv
-
-##not right
+import statistics
 
 with open('percentChange.csv') as f:
     reader = csv.reader(f)
@@ -14,15 +13,33 @@ percentChange = []
 for i in range(0, len(list_change)):
     percentChange.append(float(list_change[i][0]))
 
-slides = []
-currentSlide = percentChange[0]
-for i in range(1, len(percentChange)):
-    if currentSlide > 0 and percentChange[i] > 0:
-        currentSlide += percentChange[i]
-    elif currentSlide < 0 and percentChange[i] < 0:
-        currentSlide += percentChange[i]
-    else:
-        slides.append(currentSlide)
-        currentSlide = percentChange[i]
+percentChange.reverse()
 
-print(slides)  
+print(len(percentChange))
+
+swing = []
+for i in range(0, len(percentChange)):
+    if percentChange[i] < 0:
+        swing.append('down')
+    else:
+        swing.append('up')
+
+swings = []
+group = []
+current = swing[0]
+for i in range(0, len(swing)):
+    if swing[i] == current:
+        group.append(current)
+    else:
+        swings.append(len(group))
+        group = []
+        group.append(swing[i])
+        current = swing[i]
+
+averageswing = sum(swings)/len(swings)
+st_dev = statistics.stdev(swings)
+print(averageswing)
+print(st_dev)
+    
+plt.hist(swings)
+##plt.savefig("runs.png")

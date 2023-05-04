@@ -25,8 +25,8 @@ def random_return():
     daily_return = np.random.normal(growthRate/days, st_dev)
     return 1 + (daily_return / 100)
 
-days = 10
-simulations = 100
+days = 365
+simulations = 10
 closingPrices = []
 
 ## change this to see Histogram vs Monte Carlo
@@ -41,12 +41,12 @@ for i in range(simulations):
         plt.plot(priceSeries)
 
 if not hist:
-    plt.savefig("monteCarlo(100sim).png")
+    plt.savefig("monteCarlo(10sim).png")
 
 
 if hist:
     plt.hist(closingPrices)
-    plt.savefig("closing(100sim)")
+    plt.savefig("closing(10sim)")
 
 expectedClose = sum(closingPrices)/len(closingPrices)
 print(expectedClose)
